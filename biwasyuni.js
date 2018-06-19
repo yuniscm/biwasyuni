@@ -5,5 +5,12 @@ var fs = require('fs');
 // FIXME: Embed yuni runtime later.
 var src = fs.readFileSync(process.argv[2], 'utf8');
 
-biwas.run(src);
+var libs = {
+    "biwascheme":biwas
+};
 
+biwas.define_libfunc("yuni/js-import", 1, 1, function(ar){
+    return libs[ar[0]];
+});
+
+biwas.run(src);
