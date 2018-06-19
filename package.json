@@ -8,5 +8,9 @@
   "license": "CC0-1.0",
   "dependencies": {
     "biwascheme": "*"
+  },
+  "repository":{
+      "type": "git",
+      "url": "https://github.com/okuoku/biwasyuni.git"
   }
 }
