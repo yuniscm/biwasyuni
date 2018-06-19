@@ -1,0 +1,12 @@
+{
+  "name": "@yuniscm/biwasyuni",
+  "version": "0.0.0",
+  "main": "./biwasyuni.js",
+  "bin": {
+      "biwasyuni": "./biwasyuni.js"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "biwascheme": "*"
+  }
+}
