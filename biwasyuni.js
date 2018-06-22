@@ -21,8 +21,8 @@ biwas.define_libfunc("load", 1, 1, function(ar){
     var pth = ar[0];
     var src = fs.readFileSync(pth, "utf8"); // FIXME: Make this async.
     return new biwas.Pause(function(pause){
-        var interp2 = new biwas.Interpreter(interp, pause.resume);
-        interp2.evaluate(src);
+        var interp2 = new biwas.Interpreter(interp, this.on_error);
+        interp2.evaluate(src, pause.resume);
     });
 });
 
