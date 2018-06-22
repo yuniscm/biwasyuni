@@ -35,6 +35,140 @@ biwas.define_libfunc("yuni/js-invoke/async", 2, null, function(ar){
     });
 });
 
+biwas.Port.YuniFileInput = biwas.Class.extend(new biwas.Port(true, false), {
+    initialize: function(fs, fd){
+        this.fs = fs;
+        this.fd = fd;
+    },
+    get_string: function(after){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.readFile(fd, 'utf8', function(err, data){
+                if(err){
+                    throw new biwas.Error("ReadFile: read error");
+                }else{
+                    pause.resume(after(data));
+                }
+            });
+        });
+    },
+    close: function(){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.close(fd, function(err){
+                if(err){
+                    throw new biwas.Error("Close: error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    }
+});
+
+biwas.Port.YuniFileOutput = biwas.Class.extend(new biwas.Port(false, true), {
+    initialize: function(fs, fd){
+        this.fs = fs;
+        this.fd = fd;
+    },
+    put_string: function(str){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.writeFile(fd, str, 'utf8', function(err){
+                if(err){
+                    throw new biwas.Error("WriteFile: write error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    },
+    close: function(){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.close(fd, function(err){
+                if(err){
+                    throw new biwas.Error("Close: error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    }
+});
+
+biwas.Port.YuniFileBinaryInput = biwas.Class.extend(new biwas.Port(true, false), {
+    initialize: function(fs, fd){
+        this.fs = fs;
+        this.fd = fd;
+        this.is_binary = true;
+    },
+    get_string: function(after){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.readFile(fd, 'utf8', function(err, data){
+                if(err){
+                    throw new biwas.Error("ReadFile: read error");
+                }else{
+                    pause.resume(after(data));
+                }
+            });
+        });
+    },
+    close: function(){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.close(fd, function(err){
+                if(err){
+                    throw new biwas.Error("Close: error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    }
+});
+
+biwas.Port.YuniFileBinaryOutput = biwas.Class.extend(new biwas.Port(false, true), {
+    initialize: function(fs, fd){
+        this.fs = fs;
+        this.fd = fd;
+        this.is_binary = true;
+    },
+    put_string: function(str){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.writeFile(fd, str, 'utf8', function(err){
+                if(err){
+                    throw new biwas.Error("WriteFile: write error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    },
+    close: function(){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.close(fd, function(err){
+                if(err){
+                    throw new biwas.Error("Close: error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
+    }
+});
+
 var interp = new biwas.Interpreter(function(e){
     console.error(e.stack ? e.stack : e.toString ? e.toString() : e);
 });
