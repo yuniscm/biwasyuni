@@ -132,6 +132,33 @@ biwas.Port.YuniFileBinaryInput = biwas.Class.extend(new biwas.Port(true, false),
                 }
             });
         });
+    },
+    // Yuni addition
+    get_bytes_at: function(bv, at, len){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.read(fd, bv, at, len, null, function(err, readbytes, buf){
+                if(err){
+                    throw new biwas.Error("Read: error");
+                }else{
+                    pause.resume(readbytes);
+                }
+            });
+        });
+    },
+    get_bytes_all: function(){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.readFile(fd, function(err, bv){
+                if(err){
+                    throw new biwas.Error("Read: error");
+                }else{
+                    pause.resume(bv);
+                }
+            });
+        });
     }
 });
 
@@ -166,7 +193,116 @@ biwas.Port.YuniFileBinaryOutput = biwas.Class.extend(new biwas.Port(false, true)
                 }
             });
         });
+    },
+    // Yuni addition
+    put_uint8array: function(bv){
+        var fs = this.fs;
+        var fd = this.fd;
+        return new biwas.Pause(function(pause){
+            fs.write(fd, bv, function(err){
+                if(err){
+                    throw new biwas.Error("WriteFile: write error");
+                }else{
+                    pause.resume(biwas.undef);
+                }
+            });
+        });
     }
+});
+
+biwas.Port.YuniBufferBinaryInput = biwas.Class.extend(new biwas.Port(true, false), {
+    initialize: function(bv){
+        this.is_binary = true;
+        this.bv = bv;
+        this.current_position = 0;
+    },
+    get_string: function(after){
+        return after(String.fromCharCode.apply(null, bv.subarray(this.current_position, this.bv.length)));
+    },
+    close: function(){},
+    // Yuni addition
+    get_bytes_at: function(bv, at, len){
+        var cur = this.current_position;
+        var req = len;
+        if(cur + len > this.bv.length){
+            req = this.bv.length - cur;
+        }
+        this.current_position += req;
+        bv.set(this.bv.subarray(cur, cur + req), at);
+        return req == 0 ? biwas.eof : req;
+    },
+    get_bytes_all: function(){
+        var cur = this.current_position;
+        this.current_position = this.bv.length;
+        return bv.subarray(cur, this.bv.length);
+    }
+});
+
+biwas.Port.YuniBufferBinaryOutput = biwas.Class.extend(new biwas.Port(false, true), {
+    initialize: function(){
+        this.bv = false;
+        this.is_binary = true;
+    },
+    put_string: function(str){
+        var bv = new Uint8Array([].map.call(str, function(c){return c.charCodeAt(0);}));
+        return this.put_uint8array(bv);
+    },
+    close: function(){},
+    // Yuni addition
+    put_uint8array: function(bv){
+        if(this.bv){
+            var curlen = this.bv.length;
+            var nexlen = curlen + bv.length;
+            var newbv = new Uint8Array(nexlen);
+            newbv.set(this.bv, 0);
+            newbv.set(bv, curlen);
+            this.bv = newbv;
+        }else{
+            this.bv = bv;
+        }
+        return biwas.undef;
+    },
+    get_uint8array: function(){
+        var bv = this.bv;
+        this.bv = null;
+        return bv;
+    }
+});
+
+// R7RS ports additions
+biwas.define_libfunc("write-string", 1, null, function(ar){
+    var str = ar[0];
+    var port = ar[1] ? ar[1] : Port.current_output;
+    var start = ar[2] ? ar[2] : 0;
+    var end = ar[3] ? ar[3] : str.length;
+
+    return port.put_string(str.substring(start,end));
+});
+biwas.define_libfunc("write-bytevector", 1, null, function(ar){
+    var bv = ar[0];
+    var port = ar[1] ? ar[1] : Port.current_output;
+    var start = ar[2] ? ar[2] : 0;
+    var end = ar[3] ? ar[3] : bv.length;
+
+    return port.put_uint8array(bv.subarray(start,end));
+});
+biwas.define_libfunc("read-bytevector!", 1, 4, function(ar){
+    var bv = ar[0];
+    var port = ar[1] ? ar[1] : Port.current_input;
+    var start = ar[2] ? ar[2] : 0;
+    var end = ar[3] ? ar[3] : bv.length;
+
+    return port.get_bytes_at(bv, start, end - start);
+});
+
+biwas.define_libfunc("open-output-bytevector", 0, 0, function(ar){
+    return new biwas.Port.YuniBufferBinaryOutput();
+});
+biwas.define_libfunc("get-output-bytevector", 1, 1, function(ar){
+    return ar[0].get_uint8array();
+});
+biwas.define_libfunc("open-input-bytevector", 1, 1, function(ar){
+    return new biwas.Port.YuniBufferBinaryInput(ar[0]);
 });
 
 // R7RS bytevectors
@@ -215,6 +351,12 @@ biwas.define_libfunc("r6:utf8->string", 1, 1, function(ar){
 biwas.define_libfunc("r6:string->utf8", 1, 1, function(ar){
     // FIXME: Implement this
     return new Uint8Array([].map.call(ar[0], function(c){return c.charCodeAt(0);}));
+});
+biwas.define_libfunc("bytevector-u8-ref", 2, 2, function(ar){
+    return ar[0][ar[1]];
+});
+biwas.define_libfunc("bytevector-u8-set!", 3, 3, function(ar){
+    return ar[0][ar[1]] = ar[2];
 });
 
 // R6RS aliases for R7RS overrides
