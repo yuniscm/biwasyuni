@@ -169,6 +169,60 @@ biwas.Port.YuniFileBinaryOutput = biwas.Class.extend(new biwas.Port(false, true)
     }
 });
 
+// R7RS bytevectors
+biwas.define_libfunc("bytevector", 0, null, function(ar){
+    return Uint8Array.from(ar);
+});
+biwas.define_libfunc("make-bytevector", 1, 2, function(ar){
+    var k = ar[0];
+    var b = ar[1] ? ar[1] : 0;
+    var bv = new Uint8Array(k);
+    if(b != 0){
+        bv.fill(b);
+    }
+    return bv;
+});
+biwas.define_libfunc("r6:bytevector-copy", 1, 1, function(ar){
+    return new Uint8Array(ar[0]);
+});
+biwas.define_libfunc("r6:bytevector-copy!", 5, 5, function(ar){
+    var from = ar[0];
+    var start = ar[1];
+    var to = ar[2];
+    var at = ar[3];
+    var len = ar[4];
+    if(from === to){ /* copyWithin */
+        to.copyWithin(at, start, start + len);
+    }else{
+        to.set(from.subarray(start, start + len),at);
+    }
+    return biwas.undef;
+});
+biwas.define_libfunc("bytevector-length", 1, 1, function(ar){
+    return ar[0].length;
+});
+biwas.define_libfunc("bytevector-append", 0, null, function(ar){
+    var totallen = ar.reduce(function(acc, cur){ return acc + ar.length; }, 0);
+    var bv = new Uint8Array(totallen);
+    var cur = 0;
+    ar.forEach(function(b){bv.set(b, cur); cur += b.length;});
+    return bv;
+});
+biwas.define_libfunc("r6:utf8->string", 1, 1, function(ar){
+    // FIXME: Implement this
+    return String.fromCharCode.apply(null, ar[0]);
+});
+biwas.define_libfunc("r6:string->utf8", 1, 1, function(ar){
+    // FIXME: Implement this
+    return new Uint8Array([].map.call(ar[0], function(c){return c.charCodeAt(0);}));
+});
+
+// R6RS aliases for R7RS overrides
+biwas.alias_libfunc("string->list", "r6:string->list");
+biwas.alias_libfunc("string-copy", "r6:string-copy");
+biwas.alias_libfunc("vector-copy", "r6:vector-copy");
+biwas.alias_libfunc("vector-fill!", "r6:vector-fill!");
+
 var interp = new biwas.Interpreter(function(e){
     console.error(e.stack ? e.stack : e.toString ? e.toString() : e);
 });
