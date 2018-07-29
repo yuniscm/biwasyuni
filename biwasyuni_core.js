@@ -374,9 +374,9 @@ biwas.alias_libfunc("string-copy", "r6:string-copy");
 biwas.alias_libfunc("vector-copy", "r6:vector-copy");
 biwas.alias_libfunc("vector-fill!", "r6:vector-fill!");
 
-var run = function(src, errhandler){
+var run = function(src, resulthandler, errhandler){
     var interp = new biwas.Interpreter(errhandler);
-    interp.evaluate(src);
+    interp.evaluate(src, resulthandler);
 };
 
 module.exports = {
