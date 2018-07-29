@@ -1,9 +1,4 @@
-#!/usr/bin/env node
-
 var biwas = require('./node_modules/biwascheme');
-var fs = require('fs'); // Also used for (override) load
-// FIXME: Embed yuni runtime later.
-var src = fs.readFileSync(process.argv[2], 'utf8');
 
 var libs = {
     "biwascheme":biwas
@@ -12,6 +7,10 @@ var libs = {
 biwas.define_libfunc("yuni/js-import", 1, 1, function(ar){
     return libs[ar[0]];
 });
+
+var add_module = function(name, obj){
+    libs[name] = obj;
+};
 
 
 biwas.define_libfunc("load", 1, 1, function(ar){
@@ -365,8 +364,12 @@ biwas.alias_libfunc("string-copy", "r6:string-copy");
 biwas.alias_libfunc("vector-copy", "r6:vector-copy");
 biwas.alias_libfunc("vector-fill!", "r6:vector-fill!");
 
-var interp = new biwas.Interpreter(function(e){
-    console.error(e.stack ? e.stack : e.toString ? e.toString() : e);
-});
+var run = function(src, errhandler){
+    var interp = new biwas.Interpreter(errhandler);
+    interp.evaluate(src);
+};
 
-interp.evaluate(src);
+module.exports = {
+    run:run,
+    add_module:add_module
+};
