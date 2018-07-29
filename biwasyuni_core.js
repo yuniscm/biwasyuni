@@ -23,10 +23,15 @@ biwas.define_libfunc("load", 1, 1, function(ar){
     // NB: Override load because we may return a Pause on load'ed code.
     // FIXME: Parhaps it's same for scheme-eval...
     var pth = ar[0];
-    var src = current_fs.readFileSync(pth, "utf8"); // FIXME: Make this async.
     return new biwas.Pause(function(pause){
-        var interp2 = new biwas.Interpreter(this.on_error);
-        interp2.evaluate(src, function(obj){pause.resume(obj)});
+        current_fs.readFile(pth, 'utf8', function(err, src){
+            if(err){
+                throw new biwas.Error("load: read error");
+            }else{
+                var interp2 = new biwas.Interpreter(this.on_error);
+                interp2.evaluate(src, function(obj){pause.resume(obj);});
+            }
+        });
     });
 });
 
