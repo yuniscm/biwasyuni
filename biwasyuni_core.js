@@ -1,5 +1,7 @@
 var biwas = require('./node_modules/biwascheme');
 
+var current_fs = false;
+
 var libs = {
     "biwascheme":biwas
 };
@@ -12,15 +14,18 @@ var add_module = function(name, obj){
     libs[name] = obj;
 };
 
+var set_current_fs = function(obj){
+    current_fs = obj;
+};
 
 biwas.define_libfunc("load", 1, 1, function(ar){
     // Override: (load fn)
     // NB: Override load because we may return a Pause on load'ed code.
     // FIXME: Parhaps it's same for scheme-eval...
     var pth = ar[0];
-    var src = fs.readFileSync(pth, "utf8"); // FIXME: Make this async.
+    var src = current_fs.readFileSync(pth, "utf8"); // FIXME: Make this async.
     return new biwas.Pause(function(pause){
-        var interp2 = new biwas.Interpreter(interp, this.on_error);
+        var interp2 = new biwas.Interpreter(this.on_error);
         interp2.evaluate(src, pause.resume);
     });
 });
@@ -371,5 +376,6 @@ var run = function(src, errhandler){
 
 module.exports = {
     run:run,
-    add_module:add_module
+    add_module:add_module,
+    set_current_fs:set_current_fs
 };
