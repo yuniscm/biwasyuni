@@ -379,8 +379,28 @@ var run = function(src, resulthandler, errhandler){
     interp.evaluate(src, resulthandler);
 };
 
+var make_buffered_string_port = function(output){
+    var re = new RegExp("\n$");
+    var buffer = "";
+    var p = new biwas.Port.CustomOutput(function(str){
+        if(str.match(re)){
+            console.log(buffer + str);
+            buffer = "";
+        }else{
+            buffer += str;
+        }
+    });
+    return p;
+}
+
+var switch_console_output = function(){
+    biwas.Port.current_error = make_buffered_string_port(console.log);
+    biwas.Port.current_output = make_buffered_string_port(console.log);
+};
+
 module.exports = {
     run:run,
     add_module:add_module,
-    set_current_fs:set_current_fs
+    set_current_fs:set_current_fs,
+    switch_console_output:switch_console_output
 };
