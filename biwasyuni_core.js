@@ -44,6 +44,14 @@ biwas.define_libfunc("yuni/js-invoke/async", 2, null, function(ar){
     });
 });
 
+biwas.define_libfunc("yuni/js-invoke/async1", 1, null, function(ar){
+    var js_obj = ar.shift();
+    return new biwas.Pause(function(pause){
+        ar.push(function(){ pause.resume([].slice.call(arguments)); });
+        js_obj.apply(js_obj, ar);
+    });
+});
+
 biwas.Port.YuniFileInput = biwas.Class.extend(new biwas.Port(true, false), {
     initialize: function(fs, fd){
         this.fs = fs;
