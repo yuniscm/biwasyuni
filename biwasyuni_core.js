@@ -1,4 +1,4 @@
-var biwas = require('./node_modules/biwascheme');
+var biwas = require('biwascheme');
 
 var current_fs = false;
 
