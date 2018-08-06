@@ -26,7 +26,7 @@ biwas.define_libfunc("load", 1, 1, function(ar){
     return new biwas.Pause(function(pause){
         current_fs.readFile(pth, 'utf8', function(err, src){
             if(err){
-                throw new biwas.Error("load: read error");
+                throw new biwas.Error("load: read error " + pth);
             }else{
                 var interp2 = new biwas.Interpreter(pause.interpreter.on_error);
                 interp2.evaluate(src, function(obj){pause.resume(obj);});
