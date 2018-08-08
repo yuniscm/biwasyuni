@@ -1,4 +1,4 @@
-var biwas = require('biwascheme');
+var biwas = require('../biwascore/biwascore_module.js');
 
 var current_fs = false;
 
@@ -406,9 +406,14 @@ var switch_console_output = function(){
     biwas.Port.current_output = make_buffered_string_port(console.log);
 };
 
+var activate_node_functions = function(fs,path,process){
+    biwas.activate_node_functions(fs,path,process);
+}
+
 module.exports = {
     run:run,
     add_module:add_module,
     set_current_fs:set_current_fs,
-    switch_console_output:switch_console_output
+    switch_console_output:switch_console_output,
+    activate_node_functions:activate_node_functions
 };

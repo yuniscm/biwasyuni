@@ -29,6 +29,11 @@ var gen_filelist = function(yuniroot, loadpaths, entrypoints, cb){
     biwasyuni.run(script, cb, biwaserror);
 }
 
+biwasyuni.activate_node_functions(require("fs"),
+                                  require("path"),
+                                  process);
+
 module.exports = {
     gen_filelist:gen_filelist
+
 };

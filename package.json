@@ -7,7 +7,6 @@
   },
   "license": "CC0-1.0",
   "dependencies": {
-    "biwascheme": "*"
   },
   "repository":{
       "type": "git",
