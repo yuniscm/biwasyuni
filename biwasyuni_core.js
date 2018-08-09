@@ -18,6 +18,11 @@ var set_current_fs = function(obj){
     current_fs = obj;
 };
 
+biwas.define_libfunc("file-exists?", 1, 1, function(ar){
+    biwas.assert_string(ar[0]);
+    return current_fs.existsSync(ar[0]);
+});
+
 biwas.define_libfunc("load", 1, 1, function(ar){
     // Override: (load fn)
     // NB: Override load because we may return a Pause on load'ed code.
