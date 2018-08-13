@@ -396,11 +396,11 @@ var make_buffered_string_port = function(output){
     var re = new RegExp("\n$");
     var buffer = "";
     var p = new biwas.Port.CustomOutput(function(str){
+        buffer += str;
         if(str.match(re)){
-            console.log(buffer + str);
+            buffer = buffer.substring(0, buffer.length-1);
+            console.log(buffer);
             buffer = "";
-        }else{
-            buffer += str;
         }
     });
     return p;
