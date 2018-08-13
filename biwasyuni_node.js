@@ -33,6 +33,9 @@ biwasyuni.activate_node_functions(require("fs"),
                                   require("path"),
                                   process);
 
+// FIXME: Using web-level console; implement full console later..
+biwasyuni.switch_console_output();
+
 module.exports = {
     gen_filelist:gen_filelist
 
