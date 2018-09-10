@@ -1,4 +1,4 @@
-var biwas = require('../biwascore/biwascore_module.js');
+var biwas = require('@yuniscm/biwascore');
 
 var current_fs = false;
 

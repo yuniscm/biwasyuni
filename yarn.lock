@@ -2,22 +2,28 @@
 # yarn lockfile v1
 
 
-biwascheme@*:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/biwascheme/-/biwascheme-0.6.8.tgz#dea50c99fa479dfdd0929386fe3e25df2a4f4fba"
+"@yuniscm/biwascore@*":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@yuniscm/biwascore/-/biwascore-0.0.1.tgz#1d5ab5dc02ea3e6935b2b9b5b0f0ac43360a1c11"
   dependencies:
-    optparse "1.0.5"
-    underscore "1.2.2"
-    underscore.string "2.0.0"
+    underscore "^1.9.1"
+    underscore.string "^3.3.4"
 
-optparse@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/optparse/-/optparse-1.0.5.tgz#75e75a96506611eb1c65ba89018ff08a981e2c16"
+sprintf-js@^1.0.3:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
 
-underscore.string@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-2.0.0.tgz#7470858a54a0bb3560d037da56dcc67b5181e11a"
+underscore.string@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-3.3.4.tgz#2c2a3f9f83e64762fdc45e6ceac65142864213db"
+  dependencies:
+    sprintf-js "^1.0.3"
+    util-deprecate "^1.0.2"
 
-underscore@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.2.2.tgz#74dd40e9face84e724eb2edae945b8aedc233ba3"
+underscore@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
+
+util-deprecate@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

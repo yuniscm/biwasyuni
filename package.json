@@ -1,15 +1,16 @@
 {
-  "name": "@yuniscm/biwasyuni",
-  "version": "0.0.2",
-  "main": "./biwasyuni.js",
-  "bin": {
-      "biwasyuni": "./biwasyuni.js"
-  },
-  "license": "CC0-1.0",
-  "dependencies": {
-  },
-  "repository":{
-      "type": "git",
-      "url": "https://github.com/okuoku/biwasyuni.git"
-  }
+    "name": "@yuniscm/biwasyuni",
+    "version": "0.0.2",
+    "main": "./biwasyuni.js",
+    "bin": {
+        "biwasyuni": "./biwasyuni.js"
+    },
+    "license": "CC0-1.0",
+    "dependencies": {
+        "@yuniscm/biwascore": "*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yuniscm/biwasyuni.git"
+    }
 }
