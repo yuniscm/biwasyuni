@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var biwasyuni = require('./biwasyuni_core.js');
 
 var yuniroot = false;
@@ -13,6 +14,8 @@ var gen_filelist = function(yuniroot, loadpaths, entrypoints, cb){
          "lib-runtime/selfboot/common/common.scm",
          "lib-runtime/selfboot/biwascheme/run-genfilelist.scm"];
 
+    // Slashfy yuniroot
+    yuniroot = yuniroot.split(path.sep).join("/");
     biwasyuni.add_module("fs", fs);
     biwasyuni.set_current_fs(fs);
     biwasyuni.add_module("yuniroot", yuniroot);
