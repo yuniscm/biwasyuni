@@ -1,6 +1,6 @@
 {
     "name": "@yuniscm/biwasyuni",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "./biwasyuni.js",
     "bin": {
         "biwasyuni": "./biwasyuni.js"
