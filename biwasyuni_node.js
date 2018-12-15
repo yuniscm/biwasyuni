@@ -40,6 +40,6 @@ biwasyuni.activate_node_functions(require("fs"),
 biwasyuni.switch_console_output();
 
 module.exports = {
-    gen_filelist:gen_filelist
-
+    gen_filelist:gen_filelist,
+    biwasyuni:biwasyuni
 };

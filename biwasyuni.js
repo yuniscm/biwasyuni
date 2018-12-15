@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var biwasyuni = require('./biwasyuni_core.js');
+var biwasyuni = require('./biwasyuni_node.js').biwasyuni;
 
 var src = fs.readFileSync(process.argv[2], 'utf8');
 
