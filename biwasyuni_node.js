@@ -10,8 +10,7 @@ var gen_filelist = function(yuniroot, loadpaths, entrypoints, cb){
         throw e;
     }
     var preloads = 
-        ["lib-runtime/selfboot/biwascheme/selfboot-runtime.scm",
-         "lib-runtime/selfboot/common/common.scm",
+        ["lib-runtime/selfboot/biwascheme/selfboot-entry.scm",
          "lib-runtime/selfboot/biwascheme/run-genfilelist.scm"];
 
     // Slashfy yuniroot
@@ -19,6 +18,7 @@ var gen_filelist = function(yuniroot, loadpaths, entrypoints, cb){
     biwasyuni.add_module("fs", fs);
     biwasyuni.set_current_fs(fs);
     biwasyuni.add_module("yuniroot", yuniroot);
+    biwasyuni.add_module("biwasyuni-load-runtime-only", true);
     biwasyuni.add_module("entrypoints", entrypoints);
     if(loadpaths){
         biwasyuni.add_module("loadpaths", loadpaths);
