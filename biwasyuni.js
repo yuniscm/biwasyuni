@@ -10,4 +10,5 @@ biwasyuni.set_current_fs(fs);
 
 biwasyuni.run(src, function(res){}, function(e){
     console.error(e.stack ? e.stack : e.toString ? e.toString() : e);
+    process.exit(1);
 });
