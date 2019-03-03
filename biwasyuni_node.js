@@ -10,7 +10,7 @@ var gen_filelist = function(yuniroot, loadpaths, entrypoints, cb){
         throw e;
     }
     var preloads = 
-        ["lib-runtime/selfboot/biwascheme/selfboot-entry.scm",
+        ["lib-runtime/selfboot/biwascheme/selfboot-yunipkg.scm",
          "lib-runtime/selfboot/biwascheme/run-genfilelist.scm"];
 
     // Slashfy yuniroot
