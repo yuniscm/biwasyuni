@@ -360,7 +360,7 @@ biwas.define_libfunc("bytevector-length", 1, 1, function(ar){
     return ar[0].length;
 });
 biwas.define_libfunc("bytevector-append", 0, null, function(ar){
-    var totallen = ar.reduce(function(acc, cur){ return acc + ar.length; }, 0);
+    var totallen = ar.reduce(function(acc, cur){ return acc + cur.length; }, 0);
     var bv = new Uint8Array(totallen);
     var cur = 0;
     ar.forEach(function(b){bv.set(b, cur); cur += b.length;});
@@ -386,6 +386,8 @@ biwas.alias_libfunc("string->list", "r6:string->list");
 biwas.alias_libfunc("string-copy", "r6:string-copy");
 biwas.alias_libfunc("vector-copy", "r6:vector-copy");
 biwas.alias_libfunc("vector-fill!", "r6:vector-fill!");
+biwas.alias_libfunc("assoc", "r6:assoc");
+biwas.alias_libfunc("member", "r6:member");
 
 var run = function(src, resulthandler, errhandler){
     var interp = new biwas.Interpreter(errhandler);
